@@ -922,6 +922,7 @@ export default class Rcon {
         const admin = this.admins.has(player.id);
 
         if (await this.bot.whitelist.check(this, player)) return;
+        if (await this.bot.blacklist.check(this, player)) return;
 
         if (this.options.automod) {
             const profaneWords = await this.bot.antiSlur.getSlurs(

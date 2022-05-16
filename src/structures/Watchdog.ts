@@ -26,6 +26,7 @@ import Database from "./Database";
 import DiscordEmbed from "./DiscordEmbed";
 import Rcon from "./Rcon";
 import Whitelist from "./Whitelist";
+import Blacklist from "./Blacklist";
 
 interface Iids {
     playFabID: string;
@@ -53,6 +54,7 @@ export default class Watchdog {
     public mordhau = MordhauAPI;
     public antiSlur: AntiSlur;
     public whitelist: Whitelist;
+    public blacklist: Blacklist;
 
     // public requestingPlayers: LRU<
     //     string,
@@ -1493,6 +1495,7 @@ export default class Watchdog {
         this.antiSlur = new AntiSlur(this);
 
         this.whitelist = new Whitelist(this);
+        this.blacklist = new Blacklist(this);
 
         await this.loadRCONCommands();
 
