@@ -1,4 +1,4 @@
-Blacklistimport flatMap from "array.prototype.flatmap";
+import flatMap from "array.prototype.flatmap";
 import pluralize from "pluralize";
 import {
     ApplicationCommandPermissionType,
