@@ -46,6 +46,7 @@ const Database_1 = __importDefault(require("./Database"));
 const DiscordEmbed_1 = __importDefault(require("./DiscordEmbed"));
 const Rcon_1 = __importDefault(require("./Rcon"));
 const Whitelist_1 = __importDefault(require("./Whitelist"));
+const Blacklist_1 = __importDefault(require("./Blacklist"));
 class Watchdog {
     constructor(token) {
         this.startTime = Date.now();
@@ -817,6 +818,7 @@ class Watchdog {
         logger_1.default.info("Bot", `Loaded ${pluralize_1.default("server", Config_1.default.get("servers").length, true)}`);
         this.antiSlur = new AutoMod_1.default(this);
         this.whitelist = new Whitelist_1.default(this);
+        this.blacklist = new Blacklist_1.default(this);
         await this.loadRCONCommands();
         for (const [name, server] of this.servers) {
             const s = Config_1.default.get("servers").find((s) => s.name === name) || {
