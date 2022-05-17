@@ -150,6 +150,7 @@ class Blacklist extends SlashCommand_1.default {
                 return (await ctx.send(`Blacklist disabled on ${server.name}`));
             }
             case "list": {
+                console.log(server.rcon);
                 const players = await this.bot.blacklist.list(server.rcon);
                 return (await ctx.send(`Blacklisted players on ${server.name}: ${players.length
                     ? players.map((player) => player.id).join(", ")
@@ -159,7 +160,7 @@ class Blacklist extends SlashCommand_1.default {
                 const ingamePlayer = await server.rcon.getIngamePlayer(options.player);
                 const player = this.bot.cachedPlayers.get((ingamePlayer === null || ingamePlayer === void 0 ? void 0 : ingamePlayer.id) || options.player) || {
                     server: server.name,
-                    ...(await PlayFab_1.LookupPlayer((ingamePlayer === null || ingamePlayer === void 0 ? void 0 : ingamePlayer.id) || options.player)),
+                    ...(await (0, PlayFab_1.LookupPlayer)((ingamePlayer === null || ingamePlayer === void 0 ? void 0 : ingamePlayer.id) || options.player)),
                 };
                 if (!(player === null || player === void 0 ? void 0 : player.id)) {
                     return await ctx.send("Invalid player provided");
@@ -182,7 +183,7 @@ class Blacklist extends SlashCommand_1.default {
                 const ingamePlayer = await server.rcon.getIngamePlayer(options.player);
                 const player = this.bot.cachedPlayers.get((ingamePlayer === null || ingamePlayer === void 0 ? void 0 : ingamePlayer.id) || options.player) || {
                     server: server.name,
-                    ...(await PlayFab_1.LookupPlayer((ingamePlayer === null || ingamePlayer === void 0 ? void 0 : ingamePlayer.id) || options.player)),
+                    ...(await (0, PlayFab_1.LookupPlayer)((ingamePlayer === null || ingamePlayer === void 0 ? void 0 : ingamePlayer.id) || options.player)),
                 };
                 if (!(player === null || player === void 0 ? void 0 : player.id)) {
                     return await ctx.send("Invalid player provided");
