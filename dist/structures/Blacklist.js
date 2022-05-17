@@ -52,18 +52,18 @@ class AutoMod {
         this.bot = bot;
     }
     sendMessage(webhookCredentials, message) {
-        return Discord_1.sendWebhookMessage(webhookCredentials, message);
+        return (0, Discord_1.sendWebhookMessage)(webhookCredentials, message);
     }
     async check(rcon, player) {
         const server = this.config.get("servers").find((s) => s.name === rcon.options.name);
         if (!(server && server.enabled) ||
             rcon.admins.has(player.id) ||
-            this.config.get("players").find((p) => p.id === player.id && p.server === rcon.options.name)) {
-            return false;
+            this.config.get("players").find((p) => p.id === player.id === rcon.options.name)) {
+              await rcon.send(`kick ${player.id} Blacklisted, appeal @ dansduels.com.`);
+              this.sendMessage(rcon.webhooks.get("activity"), `${(0, parseOut_1.default)(player.name)} (${(0, PlayerID_1.outputPlayerIDs)(player.ids, true)}) was kicked for being blacklisted (Server: ${rcon.options.name})`);
+              logger_1.default.info("Blacklist", `${player.name} (${(0, PlayerID_1.outputPlayerIDs)(player.ids)}) was kicked for being blacklisted (Server: ${rcon.options.name})`);
+              return false;
         }
-        await rcon.send(`kick ${player.id} You are blacklisted on this server.`);
-        this.sendMessage(rcon.webhooks.get("activity"), `${parseOut_1.default(player.name)} (${PlayerID_1.outputPlayerIDs(player.ids, true)}) was kicked for not being blacklisted (Server: ${rcon.options.name})`);
-        logger_1.default.info("Blacklist", `${player.name} (${PlayerID_1.outputPlayerIDs(player.ids)}) was kicked for not being blacklisted (Server: ${rcon.options.name})`);
         return true;
     }
     async on(rcon, admin) {
@@ -79,8 +79,8 @@ class AutoMod {
             },
         ]);
         rcon.say(`Blacklist has been enabled`);
-        this.sendMessage(rcon.webhooks.get("activity"), `${parseOut_1.default(admin.name)} (${PlayerID_1.outputPlayerIDs(admin.ids, true)}) enabled the blacklist (Server: ${rcon.options.name})`);
-        logger_1.default.info("Blacklist", `${admin.name} (${PlayerID_1.outputPlayerIDs(admin.ids)}) enabled the blacklist (Server: ${rcon.options.name})`);
+        this.sendMessage(rcon.webhooks.get("activity"), `${(0, parseOut_1.default)(admin.name)} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids, true)}) enabled the blacklist (Server: ${rcon.options.name})`);
+        logger_1.default.info("Blacklist", `${admin.name} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids)}) enabled the blacklist (Server: ${rcon.options.name})`);
     }
     async off(rcon, admin) {
         const server = this.config.get("servers").find((s) => s.name === rcon.options.name);
@@ -89,15 +89,15 @@ class AutoMod {
         }
         this.config.set("servers", this.config.get("servers").filter((s) => s.name !== rcon.options.name));
         rcon.say(`Blacklist has been disabled`);
-        this.sendMessage(rcon.webhooks.get("activity"), `${parseOut_1.default(admin.name)} (${PlayerID_1.outputPlayerIDs(admin.ids, true)}) disabled the blacklist (Server: ${rcon.options.name})`);
-        logger_1.default.info("Blacklist", `${admin.name} (${PlayerID_1.outputPlayerIDs(admin.ids)}) disabled the blacklist (Server: ${rcon.options.name})`);
+        this.sendMessage(rcon.webhooks.get("activity"), `${(0, parseOut_1.default)(admin.name)} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids, true)}) disabled the blacklist (Server: ${rcon.options.name})`);
+        logger_1.default.info("Blacklist", `${admin.name} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids)}) disabled the blacklist (Server: ${rcon.options.name})`);
     }
     async list(rcon) {
         return this.config.get("players").filter((p) => p.server === rcon.options.name);
     }
     async add(rcon, admin, player) {
         if (this.config.get("players").find((p) => p.id === player.id && p.server === rcon.options.name)) {
-            return `${parseOut_1.default(player.name)} (${PlayerID_1.outputPlayerIDs(player.ids, true)}) is already blacklisted.`;
+            return `${(0, parseOut_1.default)(player.name)} (${(0, PlayerID_1.outputPlayerIDs)(player.ids, true)}) is already blacklisted.`;
         }
         this.config.set("players", [
             ...this.config.get("players"),
@@ -106,18 +106,18 @@ class AutoMod {
                 server: rcon.options.name,
             },
         ]);
-        rcon.say(`${player.name} (${PlayerID_1.outputPlayerIDs(player.ids)}) was blacklisted.`);
-        this.sendMessage(rcon.webhooks.get("activity"), `${parseOut_1.default(admin.name)} (${PlayerID_1.outputPlayerIDs(admin.ids, true)}) added ${parseOut_1.default(player.name)} (${PlayerID_1.outputPlayerIDs(player.ids, true)}) to the blacklist (Server: ${rcon.options.name})`);
-        logger_1.default.info("Blacklist", `${admin.name} (${PlayerID_1.outputPlayerIDs(admin.ids)}) added ${player.name} (${PlayerID_1.outputPlayerIDs(player.ids)}) to the blacklist (Server: ${rcon.options.name})`);
+        rcon.say(`${player.name} (${(0, PlayerID_1.outputPlayerIDs)(player.ids)}) was blacklisted.`);
+        this.sendMessage(rcon.webhooks.get("activity"), `${(0, parseOut_1.default)(admin.name)} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids, true)}) added ${(0, parseOut_1.default)(player.name)} (${(0, PlayerID_1.outputPlayerIDs)(player.ids, true)}) to the blacklist (Server: ${rcon.options.name})`);
+        logger_1.default.info("Blacklist", `${admin.name} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids)}) added ${player.name} (${(0, PlayerID_1.outputPlayerIDs)(player.ids)}) to the blacklist (Server: ${rcon.options.name})`);
     }
     async remove(rcon, admin, player) {
         if (!this.config.get("players").find((p) => p.id === player.id && p.server === rcon.options.name)) {
-            return `${parseOut_1.default(player.name)} (${PlayerID_1.outputPlayerIDs(player.ids, true)}) is not blacklisted.`;
+            return `${(0, parseOut_1.default)(player.name)} (${(0, PlayerID_1.outputPlayerIDs)(player.ids, true)}) is not blacklisted.`;
         }
         this.config.set("players", this.config.get("players").filter((p) => p.id !== player.id && p.server !== rcon.options.name));
-        rcon.say(`${player.name} (${PlayerID_1.outputPlayerIDs(player.ids)}) was removed from the blacklist.`);
-        this.sendMessage(rcon.webhooks.get("activity"), `${parseOut_1.default(admin.name)} (${PlayerID_1.outputPlayerIDs(admin.ids, true)}) removed ${parseOut_1.default(player.name)} (${PlayerID_1.outputPlayerIDs(player.ids, true)}) from the blacklist (Server: ${rcon.options.name})`);
-        logger_1.default.info("Blacklist", `${admin.name} (${PlayerID_1.outputPlayerIDs(admin.ids)}) removed ${player.name} (${PlayerID_1.outputPlayerIDs(player.ids)}) from the blacklist (Server: ${rcon.options.name})`);
+        rcon.say(`${player.name} (${(0, PlayerID_1.outputPlayerIDs)(player.ids)}) was removed from the blacklist.`);
+        this.sendMessage(rcon.webhooks.get("activity"), `${(0, parseOut_1.default)(admin.name)} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids, true)}) removed ${(0, parseOut_1.default)(player.name)} (${(0, PlayerID_1.outputPlayerIDs)(player.ids, true)}) from the blacklist (Server: ${rcon.options.name})`);
+        logger_1.default.info("Blacklist", `${admin.name} (${(0, PlayerID_1.outputPlayerIDs)(admin.ids)}) removed ${player.name} (${(0, PlayerID_1.outputPlayerIDs)(player.ids)}) from the blacklist (Server: ${rcon.options.name})`);
     }
 }
 exports.default = AutoMod;
