@@ -78,13 +78,13 @@ export default class AutoMod {
             rcon.admins.has(player.id) ||
             (
                 this.config.get("players") as { id: string; server: string }[]
-            ).find((p) => p.id === player.id === rcon.options.name)
-            await rcon.send(
-                `kick ${player.id} Blacklisted, appeal @ dansduels.com.`
-            );
+            ).find((p) => p.id === player.id && p.server === rcon.options.name)
         ) {
+            await rcon.send(
+            `kick ${player.id} You are not blacklisted on this server.`
+        );
             return false;
-        }
+        };
 
         // else {
         //     await rcon.say(
